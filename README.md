@@ -50,7 +50,7 @@ The input file to these functions is a matrix, of any dimension where the number
 
 
 # main.go file given 
-package Backend_Challenge
+package leapfrog-coding
 
 import (
 	"encoding/csv"
@@ -114,7 +114,7 @@ curl -F 'file=@/path/matrix.csv' "localhost:8080/echo"
 
 # Setup
 
-- unzip the Backend_Challenge.zip once downloaded from the google drive
+- unzip the leapfrog-coding.zip once downloaded from the google drive
 
 # ways to run 
 
@@ -124,19 +124,19 @@ curl -F 'file=@/path/matrix.csv' "localhost:8080/echo"
 "pathtoyourfolder" replace it with actual path
 
 -for echo
-curl -F "file=@pathtoyourfolder\\Backend_Challenge\\testdata\\matrix.csv" "localhost:8080/echo"
+curl -F "file=@pathtoyourfolder\\leapfrog-coding\\testdata\\matrix.csv" "localhost:8080/echo"
 
 -for invert
-curl -F "file=@pathtoyourfolder\\Backend_Challenge\\testdata\\matrix.csv" "localhost:8080/invert"
+curl -F "file=@pathtoyourfolder\\leapfrog-coding\\testdata\\matrix.csv" "localhost:8080/invert"
 
 -for flatten
-curl -F "file=@pathtoyourfolder\\Backend_Challenge\\testdata\\matrix.csv" "localhost:8080/flatten"
+curl -F "file=@pathtoyourfolder\\leapfrog-coding\\testdata\\matrix.csv" "localhost:8080/flatten"
 
 -for sum
-curl -F "file=@pathtoyourfolder\\Backend_Challenge\\testdata\\matrix.csv" "localhost:8080/sum"
+curl -F "file=@pathtoyourfolder\\leapfrog-coding\\testdata\\matrix.csv" "localhost:8080/sum"
 
 -for multiply
-curl -F "file=@pathtoyourfolder\\Backend_Challenge\\testdata\\matrix.csv" "localhost:8080/multiply"
+curl -F "file=@pathtoyourfolder\\leapfrog-coding\\testdata\\matrix.csv" "localhost:8080/multiply"
 
 # Testing
 -run the test using from the folder

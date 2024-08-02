@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"Backend_Challenge/operations"
 	"encoding/csv"
 	"fmt"
+	"leapfrog-coding/operations"
 	"net/http"
 	"strconv"
 	"strings"
@@ -13,14 +13,14 @@ import (
 func InvertHandler(w http.ResponseWriter, r *http.Request, ops operations.MatrixOperations) {
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error %s", err.Error()), http.StatusBadRequest)
+		http.Error(w, formatError(err), http.StatusBadRequest)
 		return
 	}
 	defer file.Close()
 
 	records, err := csv.NewReader(file).ReadAll()
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error %s", err.Error()), http.StatusBadRequest)
+		http.Error(w, formatError(err), http.StatusBadRequest)
 		return
 	}
 
@@ -34,14 +34,14 @@ func InvertHandler(w http.ResponseWriter, r *http.Request, ops operations.Matrix
 func FlattenHandler(w http.ResponseWriter, r *http.Request, ops operations.MatrixOperations) {
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error %s", err.Error()), http.StatusBadRequest)
+		http.Error(w, formatError(err), http.StatusBadRequest)
 		return
 	}
 	defer file.Close()
 
 	records, err := csv.NewReader(file).ReadAll()
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error %s", err.Error()), http.StatusBadRequest)
+		http.Error(w, formatError(err), http.StatusBadRequest)
 		return
 	}
 
@@ -55,14 +55,14 @@ func FlattenHandler(w http.ResponseWriter, r *http.Request, ops operations.Matri
 func SumHandler(w http.ResponseWriter, r *http.Request, ops operations.MatrixOperations) {
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error %s", err.Error()), http.StatusBadRequest)
+		http.Error(w, formatError(err), http.StatusBadRequest)
 		return
 	}
 	defer file.Close()
 
 	records, err := csv.NewReader(file).ReadAll()
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error %s", err.Error()), http.StatusBadRequest)
+		http.Error(w, formatError(err), http.StatusBadRequest)
 		return
 	}
 
@@ -75,14 +75,14 @@ func SumHandler(w http.ResponseWriter, r *http.Request, ops operations.MatrixOpe
 func MultiplyHandler(w http.ResponseWriter, r *http.Request, ops operations.MatrixOperations) {
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error %s", err.Error()), http.StatusBadRequest)
+		http.Error(w, formatError(err), http.StatusBadRequest)
 		return
 	}
 	defer file.Close()
 
 	records, err := csv.NewReader(file).ReadAll()
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error %s", err.Error()), http.StatusBadRequest)
+		http.Error(w, formatError(err), http.StatusBadRequest)
 		return
 	}
 
@@ -95,14 +95,14 @@ func MultiplyHandler(w http.ResponseWriter, r *http.Request, ops operations.Matr
 func EchoHandler(w http.ResponseWriter, r *http.Request, ops operations.MatrixOperations) {
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error %s", err.Error()), http.StatusBadRequest)
+		http.Error(w, formatError(err), http.StatusBadRequest)
 		return
 	}
 	defer file.Close()
 
 	records, err := csv.NewReader(file).ReadAll()
 	if err != nil {
-		http.Error(w, fmt.Sprintf("error %s", err.Error()), http.StatusBadRequest)
+		http.Error(w, formatError(err), http.StatusBadRequest)
 		return
 	}
 
@@ -122,4 +122,7 @@ func parseCSV(records [][]string) [][]int {
 		}
 	}
 	return matrix
+}
+func formatError(err error) string {
+	return fmt.Sprintf("error: %s", err.Error())
 }

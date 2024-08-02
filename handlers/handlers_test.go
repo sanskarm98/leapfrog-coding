@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"bytes"
+	"fmt"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
@@ -13,11 +14,15 @@ const testCSV = `1,2,3
 4,5,6
 7,8,9`
 
+const formatedmatrix = "1,4,7\n2,5,8\n3,6,9\n"
+
+const matrixfilename = "matrix.csv"
+
 // MockMatrixOps implements the MatrixOperations interface for testing
 type MockMatrixOps struct{}
 
 func (m *MockMatrixOps) FormatMatrix(matrix [][]int) string {
-	return "1,4,7\n2,5,8\n3,6,9\n"
+	return formatedmatrix
 }
 
 func (m *MockMatrixOps) InvertMatrix(matrix [][]int) [][]int {
@@ -44,9 +49,9 @@ func (m *MockMatrixOps) MultiplyMatrix(matrix [][]int) int {
 func TestEchoHandler(t *testing.T) {
 	mockOps := &MockMatrixOps{}
 
-	req, err := newFileUploadRequest("/echo", "file", "matrix.csv", testCSV)
+	req, err := newFileUploadRequest("/echo", "file", matrixfilename, testCSV)
 	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
+		t.Fatalf(formattestError(err))
 	}
 
 	rr := httptest.NewRecorder()
@@ -55,7 +60,7 @@ func TestEchoHandler(t *testing.T) {
 	})
 	handler.ServeHTTP(rr, req)
 
-	expected := "1,4,7\n2,5,8\n3,6,9\n" // Update this based on the mock implementation
+	expected := formatedmatrix // Update this based on the mock implementation
 	if rr.Body.String() != expected {
 		t.Errorf("EchoHandler returned unexpected body: got %v want %v", rr.Body.String(), expected)
 	}
@@ -65,9 +70,9 @@ func TestEchoHandler(t *testing.T) {
 func TestInvertHandler(t *testing.T) {
 	mockOps := &MockMatrixOps{}
 
-	req, err := newFileUploadRequest("/invert", "file", "matrix.csv", testCSV)
+	req, err := newFileUploadRequest("/invert", "file", matrixfilename, testCSV)
 	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
+		t.Fatalf(formattestError(err))
 	}
 
 	rr := httptest.NewRecorder()
@@ -76,7 +81,7 @@ func TestInvertHandler(t *testing.T) {
 	})
 	handler.ServeHTTP(rr, req)
 
-	expected := "1,4,7\n2,5,8\n3,6,9\n"
+	expected := formatedmatrix
 	if rr.Body.String() != expected {
 		t.Errorf("InvertHandler returned unexpected body: got %v want %v", rr.Body.String(), expected)
 	}
@@ -86,9 +91,9 @@ func TestInvertHandler(t *testing.T) {
 func TestFlattenHandler(t *testing.T) {
 	mockOps := &MockMatrixOps{}
 
-	req, err := newFileUploadRequest("/flatten", "file", "matrix.csv", testCSV)
+	req, err := newFileUploadRequest("/flatten", "file", matrixfilename, testCSV)
 	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
+		t.Fatalf(formattestError(err))
 	}
 
 	rr := httptest.NewRecorder()
@@ -107,9 +112,9 @@ func TestFlattenHandler(t *testing.T) {
 func TestSumHandler(t *testing.T) {
 	mockOps := &MockMatrixOps{}
 
-	req, err := newFileUploadRequest("/sum", "file", "matrix.csv", testCSV)
+	req, err := newFileUploadRequest("/sum", "file", matrixfilename, testCSV)
 	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
+		t.Fatalf(formattestError(err))
 	}
 
 	rr := httptest.NewRecorder()
@@ -128,9 +133,9 @@ func TestSumHandler(t *testing.T) {
 func TestMultiplyHandler(t *testing.T) {
 	mockOps := &MockMatrixOps{}
 
-	req, err := newFileUploadRequest("/multiply", "file", "matrix.csv", testCSV)
+	req, err := newFileUploadRequest("/multiply", "file", matrixfilename, testCSV)
 	if err != nil {
-		t.Fatalf("Failed to create request: %v", err)
+		t.Fatalf(formattestError(err))
 	}
 
 	rr := httptest.NewRecorder()
@@ -168,4 +173,7 @@ func newFileUploadRequest(uri, paramName, fileName, fileContents string) (*http.
 	}
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 	return req, nil
+}
+func formattestError(err error) string {
+	return fmt.Sprintf("Failed to create request: %v", err)
 }

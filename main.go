@@ -1,9 +1,9 @@
 package main
 
 import (
-	"Backend_Challenge/handlers"
-	"Backend_Challenge/operations"
 	"fmt"
+	"leapfrog-coding/handlers"
+	"leapfrog-coding/operations"
 	"net/http"
 )
 
